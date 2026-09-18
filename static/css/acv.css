@@ -1096,7 +1096,7 @@
     width: calc(100% - 48px);
     max-width: 1440px;
     margin: 0 auto;
-    padding: clamp(54px, 6vw, 90px) 0 80px;
+    padding: 46px 0 80px;
 }
 
 .acv-header {

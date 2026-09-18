@@ -24,18 +24,16 @@
             <h1>Structure condition</h1>
         </div>
 
-        <label class="structure-selector" for="structure-selector">
-            <span>Structure record</span>
+        <label class="structure-selector" for="shm-file-input">
+    <span>Test sensor record</span>
 
-            <select id="structure-selector" name="structure">
-                <option value="001">Structure 001</option>
-                <option value="002">Structure 002</option>
-                <option value="003">Structure 003</option>
-                <option value="004">Structure 004</option>
-                <option value="005">Structure 005</option>
-                <option value="006">Structure 006</option>
-            </select>
-        </label>
+    <input
+        id="shm-file-input"
+        type="file"
+        name="shm_file"
+        accept=".csv,text/csv"
+    >
+    </label>
     </header>
 
 
@@ -49,12 +47,12 @@
     >
         <div>
             <span>Structure ID</span>
-            <strong id="structure-id">SHM-001</strong>
-        </div>
+            <strong id="structure-id">—</strong>     
+            </div>
 
         <div>
             <span>Input record</span>
-            <strong id="structure-record">Structure 001</strong>
+            <strong id="structure-record">No file selected</strong>
         </div>
 
         <div>
@@ -77,7 +75,75 @@
             <strong id="shm-updated-time">—</strong>
         </div>
     </section>
+<!-- ==============================================
+     LIVE LTA NETWORK CONTEXT
+     ============================================== -->
 
+<section
+    id="lta-service-panel"
+    class="lta-service-panel"
+    aria-labelledby="lta-service-title"
+>
+    <div class="lta-service-main">
+        <div>
+            <p class="section-kicker">Live LTA DataMall</p>
+            <h2 id="lta-service-title">Network service</h2>
+        </div>
+
+        <div class="lta-service-state">
+            <span
+                id="lta-connection-indicator"
+                class="lta-connection-indicator"
+                aria-hidden="true"
+            ></span>
+
+            <strong
+                id="lta-service-status"
+                class="lta-service-status"
+                aria-live="polite"
+            >
+                —
+            </strong>
+        </div>
+    </div>
+
+    <div class="lta-service-metrics">
+        <div>
+            <span>Operating condition</span>
+            <strong id="lta-service-description">—</strong>
+        </div>
+
+        <div>
+            <span>Affected segments</span>
+            <strong id="lta-affected-count">—</strong>
+        </div>
+
+        <div>
+            <span>Active advisories</span>
+            <strong id="lta-advisory-count">—</strong>
+        </div>
+
+        <div>
+            <span>Last checked</span>
+            <strong id="lta-checked-time">—</strong>
+        </div>
+    </div>
+
+    <details
+        id="lta-advisory-details"
+        class="lta-advisory-details"
+        hidden
+    >
+        <summary>
+            View LTA service advisories
+        </summary>
+
+        <div
+            id="lta-advisory-list"
+            class="lta-advisory-list"
+        ></div>
+    </details>
+</section>
 
     <!-- ==============================================
          SIGNAL AND CLASSIFICATION WORKSPACE
@@ -228,30 +294,51 @@
 
             <!-- Calculated signal measurements -->
 
-            <dl class="structure-readings">
+            <section class="operator-assessment">
 
-                <div>
-                    <dt>Mean stress</dt>
-                    <dd id="shm-mean-value">—</dd>
-                </div>
+    <p class="detail-label">What the model detected</p>
 
-                <div>
-                    <dt>Peak-to-peak</dt>
-                    <dd id="shm-peak-value">—</dd>
-                </div>
+    <h3
+        id="shm-primary-finding"
+        class="operator-assessment__headline"
+    >
+        Select a sensor record to begin assessment.
+    </h3>
 
-                <div>
-                    <dt>RMS response</dt>
-                    <dd id="shm-rms-value">—</dd>
-                </div>
+    <p
+        id="shm-possible-concern"
+        class="operator-assessment__concern"
+    >
+        —
+    </p>
 
-                <div>
-                    <dt>Dominant frequency</dt>
-                    <dd id="shm-frequency-value">—</dd>
-                </div>
+    <div class="assessment-metrics">
 
-            </dl>
+        <div>
+            <span>Severity rank</span>
+            <strong id="shm-severity-rank">—</strong>
+        </div>
 
+        <div>
+            <span>Above review</span>
+            <strong id="shm-review-delta">—</strong>
+        </div>
+
+        <div>
+            <span>Before critical</span>
+            <strong id="shm-critical-gap">—</strong>
+        </div>
+
+    </div>
+
+    <p class="detail-label">Strongest model findings</p>
+
+    <ol
+        id="shm-findings-list"
+        class="model-findings"
+    ></ol>
+
+</section>
 
             <!-- Model-driven recommendation -->
 
