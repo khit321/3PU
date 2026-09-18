@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+
+{% block title %}Structural Health | RailPulse{% endblock %}
+{% block page_class %}shm-page{% endblock %}
+
+{% block page_styles %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/shm.css') }}"
+>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="shm-dashboard">
+
+    <!-- ==============================================
+         PAGE HEADER
+         ============================================== -->
+
+    <header class="shm-header">
+        <div class="shm-title">
+            <h1>Structure condition</h1>
+        </div>
+
+        <label class="structure-selector" for="structure-selector">
+            <span>Structure record</span>
+
+            <select id="structure-selector" name="structure">
+                <option value="001">Structure 001</option>
+                <option value="002">Structure 002</option>
+                <option value="003">Structure 003</option>
+                <option value="004">Structure 004</option>
+                <option value="005">Structure 005</option>
+                <option value="006">Structure 006</option>
+            </select>
+        </label>
+    </header>
+
+
+    <!-- ==============================================
+         CONDITION SUMMARY
+         ============================================== -->
+
+    <section
+        class="shm-summary"
+        aria-label="Structural condition summary"
+    >
+        <div>
+            <span>Structure ID</span>
+            <strong id="structure-id">SHM-001</strong>
+        </div>
+
+        <div>
+            <span>Input record</span>
+            <strong id="structure-record">Structure 001</strong>
+        </div>
+
+        <div>
+            <span>Predicted damage</span>
+            <strong id="predicted-damage">—</strong>
+        </div>
+
+        <div>
+            <span>Condition</span>
+            <strong
+                id="structure-condition"
+                class="summary-pending"
+            >
+                —
+            </strong>
+        </div>
+
+        <div>
+            <span>Latest prediction</span>
+            <strong id="shm-updated-time">—</strong>
+        </div>
+    </section>
+
+
+    <!-- ==============================================
+         SIGNAL AND CLASSIFICATION WORKSPACE
+         ============================================== -->
+
+    <section class="structure-workspace">
+
+        <!-- Measured signal -->
+
+        <article class="structure-visual-panel">
+
+            <header class="panel-heading">
+                <div>
+                    <p class="section-kicker">Sensor input</p>
+                    <h2>Measured stress response</h2>
+                </div>
+
+                <span id="shm-sample-count">— samples</span>
+            </header>
+
+            <div class="structure-map shm-signal-chart">
+
+                <div class="map-grid" aria-hidden="true"></div>
+
+                <svg
+                    id="shm-response-chart"
+                    viewBox="0 0 1000 360"
+                    preserveAspectRatio="none"
+                    role="img"
+                    aria-label="Measured structural stress response"
+                >
+                    <path
+                        id="shm-response-area"
+                        class="shm-response-area"
+                        d=""
+                    ></path>
+
+                    <path
+                        id="shm-response-line"
+                        class="shm-response-line"
+                        d=""
+                    ></path>
+                </svg>
+
+                <div class="chart-x-axis" aria-hidden="true">
+                    <span>Start</span>
+                    <span>Sensor sample</span>
+                    <span>End</span>
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- Model result -->
+
+        <aside
+            class="structure-detail-panel"
+            aria-labelledby="classification-title"
+        >
+
+            <header class="classification-heading">
+                <div>
+                    <p class="detail-label">Model interpretation</p>
+                    <h2 id="classification-title">
+                        Damage classification
+                    </h2>
+                </div>
+
+                <span
+                    id="damage-status"
+                    class="zone-status"
+                >
+                    Awaiting result
+                </span>
+            </header>
+
+
+            <!-- Main prediction -->
+
+            <div class="damage-reading">
+
+                <span class="damage-reading__label">
+                    Predicted damage value
+                </span>
+
+                <div class="damage-reading__result">
+                    <strong id="damage-value">—</strong>
+                    <span id="damage-condition">—</span>
+                </div>
+
+
+                <!-- Condition scale -->
+
+                <div class="damage-meter">
+
+                    <div
+                        class="damage-meter__labels"
+                        aria-hidden="true"
+                    >
+                        <span>Healthy</span>
+                        <span>Review</span>
+                        <span>Critical</span>
+                    </div>
+
+                    <div
+                        class="damage-scale"
+                        aria-label="Predicted structural damage scale"
+                    >
+                        <span
+                            id="damage-scale-fill"
+                            style="--damage-width: 0%;"
+                        ></span>
+
+                        <i
+                            class="review-threshold"
+                            aria-hidden="true"
+                        ></i>
+
+                        <i
+                            class="critical-threshold"
+                            aria-hidden="true"
+                        ></i>
+
+                        <i
+                            id="current-damage-marker"
+                            class="current-damage-marker"
+                            hidden
+                            aria-hidden="true"
+                        ></i>
+                    </div>
+
+                    <div
+                        class="damage-meter__values"
+                        aria-hidden="true"
+                    >
+                        <span>0.0</span>
+                        <span>0.3</span>
+                        <span>0.7</span>
+                        <span>1.0</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Calculated signal measurements -->
+
+            <dl class="structure-readings">
+
+                <div>
+                    <dt>Mean stress</dt>
+                    <dd id="shm-mean-value">—</dd>
+                </div>
+
+                <div>
+                    <dt>Peak-to-peak</dt>
+                    <dd id="shm-peak-value">—</dd>
+                </div>
+
+                <div>
+                    <dt>RMS response</dt>
+                    <dd id="shm-rms-value">—</dd>
+                </div>
+
+                <div>
+                    <dt>Dominant frequency</dt>
+                    <dd id="shm-frequency-value">—</dd>
+                </div>
+
+            </dl>
+
+
+            <!-- Model-driven recommendation -->
+
+            <footer class="structure-action">
+                <span>Recommended response</span>
+
+                <strong id="structure-action">
+                    Awaiting model result
+                </strong>
+            </footer>
+
+        </aside>
+
+    </section>
+
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script
+    src="{{ url_for('static', filename='js/shm.js') }}"
+    defer
+></script>
+{% endblock %}

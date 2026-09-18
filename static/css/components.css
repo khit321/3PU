@@ -1,0 +1,295 @@
+/* ==================================================
+   RAILPULSE — SHARED COMPONENTS
+   ================================================== */
+
+
+/* ==================================================
+   BUTTON STATE
+   ================================================== */
+
+button:disabled,
+.primary-button:disabled,
+.secondary-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.58;
+    transform: none;
+}
+
+
+/* ==================================================
+   STATUS LABELS
+   ================================================== */
+
+.status-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
+    min-height: 29px;
+    padding: 0 10px;
+
+    border-radius: 3px;
+
+    font-size: 0.77rem;
+    font-weight: 650;
+}
+
+
+.status-label.normal {
+    background: var(--rail-green-soft);
+    color: var(--rail-green);
+}
+
+
+.status-label.warning {
+    background: var(--rail-red-soft);
+    color: var(--rail-red-dark);
+}
+
+
+.status-label.pending {
+    background: var(--rail-purple-soft);
+    color: var(--rail-purple);
+}
+
+
+/* ==================================================
+   SIMPLE INFORMATION ROW
+   ================================================== */
+
+.information-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    min-height: 54px;
+    padding: 10px 0;
+}
+
+
+.information-row span {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+
+.information-row strong {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 650;
+    text-align: right;
+}
+
+
+/* ==================================================
+   LOADING INDICATOR
+   ================================================== */
+
+.loading-indicator {
+    display: inline-block;
+
+    width: 18px;
+    height: 18px;
+
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+
+    animation: railpulse-spin 0.7s linear infinite;
+}
+
+
+@keyframes railpulse-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ==================================================
+   SCREEN-READER TEXT
+   ================================================== */
+
+.visually-hidden {
+    position: absolute !important;
+
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+
+    border: 0 !important;
+
+    white-space: nowrap !important;
+}
+/* ==================================================
+   RAILBOT LAUNCHER
+   ================================================== */
+
+.chatbot-launcher {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 150;
+
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+
+    cursor: pointer;
+}
+
+
+.chatbot-avatar-wrap {
+    position: relative;
+
+    display: grid;
+    place-items: center;
+
+    width: 62px;
+    height: 62px;
+    flex: 0 0 auto;
+
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+
+    background: var(--rail-purple-soft);
+
+    box-shadow:
+        0 8px 28px rgba(28, 28, 34, 0.16),
+        0 0 0 1px rgba(30, 30, 34, 0.07);
+
+    overflow: hidden;
+
+    transition:
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast);
+}
+
+
+.chatbot-avatar {
+    width: 100%;
+    height: 100%;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+}
+
+
+.chatbot-label {
+    position: relative;
+
+    padding: 10px 14px;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+    color: var(--text-primary);
+
+    box-shadow: 0 7px 22px rgba(28, 28, 34, 0.12);
+
+    font-size: 0.84rem;
+    font-weight: 650;
+    white-space: nowrap;
+
+    transition:
+        transform var(--transition-fast),
+        background var(--transition-fast);
+}
+
+
+/* Speech-bubble pointer */
+
+.chatbot-label::after {
+    position: absolute;
+    top: 50%;
+    right: -6px;
+
+    width: 12px;
+    height: 12px;
+
+    content: "";
+
+    background: #ffffff;
+
+    transform: translateY(-50%) rotate(45deg);
+}
+
+
+.chatbot-launcher:hover .chatbot-avatar-wrap {
+    box-shadow:
+        0 12px 34px rgba(28, 28, 34, 0.21),
+        0 0 0 1px rgba(30, 30, 34, 0.08);
+
+    transform: translateY(-3px);
+}
+
+
+.chatbot-launcher:hover .chatbot-label {
+    background: var(--rail-purple-soft);
+    transform: translateX(-2px);
+}
+
+
+.chatbot-launcher:hover .chatbot-label::after {
+    background: var(--rail-purple-soft);
+}
+
+
+.chatbot-launcher:focus-visible {
+    outline: none;
+}
+
+
+.chatbot-launcher:focus-visible .chatbot-avatar-wrap {
+    box-shadow:
+        0 0 0 4px rgba(116, 100, 155, 0.25),
+        0 8px 28px rgba(28, 28, 34, 0.16);
+}
+
+
+@media (max-width: 600px) {
+    .chatbot-launcher {
+        right: 16px;
+        bottom: 16px;
+    }
+
+    .chatbot-avatar-wrap {
+        width: 55px;
+        height: 55px;
+    }
+
+    .chatbot-label {
+        padding: 8px 11px;
+
+        font-size: 0.77rem;
+    }
+}
+
+/* ==================================================
+   MOBILE
+   ================================================== */
+
+@media (max-width: 520px) {
+    .information-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .information-row strong {
+        text-align: left;
+    }
+}

@@ -1,0 +1,460 @@
+{% extends "base.html" %}
+
+{% block title %}RailPulse | Door Monitoring {% endblock %}
+{% block page_class %}door-page{% endblock %}
+
+{% block page_styles %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/door.css') }}"
+>
+{% endblock %}
+
+{% block content %}
+<main class="door-dashboard">
+
+    <!-- Page heading -->
+    <header class="door-header">
+
+        <div class="door-heading-copy">
+            <h1>Door's condition</h1>
+        <div></div>
+        </div>
+
+        <div class="door-controls">
+
+            <label for="door-train">
+                <span>Train</span>
+
+                <select id="door-train" name="door-train">
+                    <option value="train-07">Train 07 · East–West Line</option>
+                    <option value="train-12">Train 12 · North–South Line</option>
+                </select>
+            </label>
+
+            <label for="door-asset">
+                <span>Door</span>
+
+                <select id="door-asset" name="door-asset">
+                    <option value="D1-01">Car 01 · Door D1-01</option>
+                    <option value="D2-02">Car 02 · Door D2-02</option>
+                    <option value="D3-04" selected>Car 03 · Door D3-04</option>
+                    <option value="D4-01">Car 04 · Door D4-01</option>
+                </select>
+            </label>
+
+        </div>
+
+    </header>
+
+
+    <!-- Current readings -->
+    <section class="door-reading-strip" aria-label="Current door readings">
+
+        <div>
+            <span>Connection</span>
+            <strong class="reading-connected">Live</strong>
+            <small>Receiving sensor data</small>
+        </div>
+
+        <div>
+            <span>Door state</span>
+            <strong id="current-door-state">Closing</strong>
+            <small id="current-command">Close command active</small>
+        </div>
+
+        <div>
+            <span>Motor current</span>
+            <strong id="current-motor-current">8.4 A</strong>
+            <small class="reading-warning">Above expected range</small>
+        </div>
+
+        <div>
+            <span>Motor voltage</span>
+            <strong id="current-motor-voltage">50.0 V</strong>
+            <small>Normal supply</small>
+        </div>
+
+        <div>
+            <span>Door position</span>
+            <strong id="current-door-position">38%</strong>
+            <small>Closing towards locked position</small>
+        </div>
+
+    </section>
+
+
+    <!-- Main monitoring workspace -->
+    <section class="door-workspace">
+
+        <!-- Signal chart -->
+        <div class="door-signal-panel">
+
+            <header class="panel-heading">
+
+                <div>
+                    <span>Motor current</span>
+                    <h2>Closing-cycle signal</h2>
+                </div>
+
+                <div
+                    class="signal-status signal-status-warning"
+                    id="signal-status"
+                >
+                    Deviation detected
+                </div>
+
+            </header>
+
+
+            <div class="chart-toolbar">
+
+                <div class="chart-reading">
+                    <strong id="chart-current-value">8.4 A</strong>
+                    <span>Latest reading</span>
+                </div>
+
+                <div
+                    class="time-range"
+                    role="group"
+                    aria-label="Telemetry time range"
+                >
+                    <button type="button" class="time-button active" data-range="30">
+                        30 sec
+                    </button>
+
+                    <button type="button" class="time-button" data-range="300">
+                        5 min
+                    </button>
+
+                    <button type="button" class="time-button" data-range="1800">
+                        30 min
+                    </button>
+                </div>
+
+            </div>
+
+
+            <div class="door-chart">
+
+                <svg
+                    id="motor-current-chart"
+                    viewBox="0 0 1000 360"
+                    role="img"
+                    aria-labelledby="motor-chart-title motor-chart-description"
+                    preserveAspectRatio="none"
+                >
+                    <title id="motor-chart-title">
+                        Door motor-current signal
+                    </title>
+
+                    <desc id="motor-chart-description">
+                        Motor-current readings during the current door-closing
+                        cycle, including the expected operating range.
+                    </desc>
+
+                    <!-- Horizontal grid -->
+                    <g class="chart-grid">
+                        <line x1="60" y1="50" x2="970" y2="50"></line>
+                        <line x1="60" y1="115" x2="970" y2="115"></line>
+                        <line x1="60" y1="180" x2="970" y2="180"></line>
+                        <line x1="60" y1="245" x2="970" y2="245"></line>
+                        <line x1="60" y1="310" x2="970" y2="310"></line>
+                    </g>
+
+                    <!-- Expected range -->
+                    <rect
+                        class="expected-range"
+                        x="60"
+                        y="145"
+                        width="910"
+                        height="105"
+                    ></rect>
+
+                    <!-- Warning threshold -->
+                    <line
+                        class="warning-threshold"
+                        x1="60"
+                        y1="130"
+                        x2="970"
+                        y2="130"
+                    ></line>
+
+                    <!-- Signal -->
+                    <path
+                        id="motor-current-path"
+                        class="motor-signal"
+                        d="
+                            M60 242
+                            C100 235 130 240 165 232
+                            S230 220 270 226
+                            S335 240 375 224
+                            S440 212 480 220
+                            S545 234 585 214
+                            S650 190 690 180
+                            S745 153 785 112
+                            S850 76 900 95
+                            S945 116 970 104
+                        "
+                    ></path>
+
+                    <circle
+                        id="latest-signal-point"
+                        class="signal-point"
+                        cx="970"
+                        cy="104"
+                        r="7"
+                    ></circle>
+
+                    <!-- Axis labels -->
+                    <g class="chart-labels">
+                        <text x="17" y="55">10 A</text>
+                        <text x="23" y="120">8 A</text>
+                        <text x="23" y="185">6 A</text>
+                        <text x="23" y="250">4 A</text>
+                        <text x="23" y="315">2 A</text>
+
+                        <text x="60" y="344">14:31:46</text>
+                        <text x="480" y="344">14:32:01</text>
+                        <text x="900" y="344">14:32:16</text>
+                    </g>
+                </svg>
+
+                <div class="chart-legend">
+                    <span class="legend-signal">Motor current</span>
+                    <span class="legend-range">Expected range</span>
+                    <span class="legend-threshold">Warning threshold</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Door mechanism -->
+        <aside class="door-mechanism-panel">
+
+            <header class="panel-heading">
+
+                <div>
+                    <span>Selected component</span>
+                    <h2 id="mechanism-door-name">Door D3-04</h2>
+                </div>
+
+                <strong class="component-warning" id="component-status">
+                    Attention
+                </strong>
+
+            </header>
+
+
+            <div class="door-mechanism" id="door-mechanism">
+
+                <div class="door-frame">
+
+                    <div class="door-leaf door-leaf-left">
+                        <span class="door-window"></span>
+                        <i class="door-handle"></i>
+                    </div>
+
+                    <div class="door-leaf door-leaf-right">
+                        <span class="door-window"></span>
+                        <i class="door-handle"></i>
+                    </div>
+
+                    <div
+                        class="door-opening"
+                        id="door-opening"
+                        style="--door-opening: 38%;"
+                    ></div>
+
+                </div>
+
+                <div class="door-position-scale">
+                    <span>Closed</span>
+
+                    <div>
+                        <i id="door-position-indicator" style="left: 38%;"></i>
+                    </div>
+
+                    <span>Open</span>
+                </div>
+
+            </div>
+
+
+            <dl class="mechanism-readings">
+
+                <div>
+                    <dt>Opening time</dt>
+                    <dd id="opening-time">2.4 s</dd>
+                </div>
+
+                <div>
+                    <dt>Closing time</dt>
+                    <dd id="closing-time">4.8 s</dd>
+                </div>
+
+                <div>
+                    <dt>Electrodynamic force</dt>
+                    <dd id="electrodynamic-force">1,045</dd>
+                </div>
+
+                <div>
+                    <dt>Door locked</dt>
+                    <dd id="door-locked">No</dd>
+                </div>
+
+            </dl>
+
+        </aside>
+
+    </section>
+
+
+    <!-- Command and state timeline -->
+    <section class="door-state-section">
+
+        <header class="section-heading">
+
+            <div>
+                <span>Current operating cycle</span>
+                <h2>Command and door-state sequence</h2>
+            </div>
+
+            <strong>Cycle 1,248</strong>
+
+        </header>
+
+
+        <div class="state-timeline">
+
+            <div class="state-step completed">
+                <small>14:31:48</small>
+                <strong>Open command</strong>
+                <span>Received</span>
+            </div>
+
+            <div class="state-step completed">
+                <small>14:31:49</small>
+                <strong>Door opening</strong>
+                <span>2.4 seconds</span>
+            </div>
+
+            <div class="state-step completed">
+                <small>14:31:52</small>
+                <strong>Door opened</strong>
+                <span>Position 100%</span>
+            </div>
+
+            <div class="state-step active">
+                <small>14:32:12</small>
+                <strong>Door closing</strong>
+                <span>Motor-current deviation</span>
+            </div>
+
+            <div class="state-step pending">
+                <small>Waiting</small>
+                <strong>Door locked</strong>
+                <span>Confirmation pending</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Recent cycles -->
+    <section class="door-cycle-section">
+
+        <header class="section-heading">
+
+            <div>
+                <span>Recent activity</span>
+                <h2>Door operating cycles</h2>
+            </div>
+
+            <span>Latest five cycles</span>
+
+        </header>
+
+
+        <div class="cycle-table-wrapper">
+
+            <table class="cycle-table">
+
+                <thead>
+                    <tr>
+                        <th scope="col">Cycle</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Maximum current</th>
+                        <th scope="col">Opening time</th>
+                        <th scope="col">Closing time</th>
+                        <th scope="col">Result</th>
+                    </tr>
+                </thead>
+
+                <tbody id="door-cycle-body">
+
+                    <tr class="cycle-warning">
+                        <td>1,248</td>
+                        <td>14:32:16</td>
+                        <td>8.4 A</td>
+                        <td>2.4 s</td>
+                        <td>4.8 s</td>
+                        <td><span class="result-warning">Attention</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>1,247</td>
+                        <td>14:29:42</td>
+                        <td>6.3 A</td>
+                        <td>2.4 s</td>
+                        <td>3.7 s</td>
+                        <td><span class="result-normal">Normal</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>1,246</td>
+                        <td>14:27:08</td>
+                        <td>6.1 A</td>
+                        <td>2.3 s</td>
+                        <td>3.6 s</td>
+                        <td><span class="result-normal">Normal</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>1,245</td>
+                        <td>14:24:35</td>
+                        <td>6.4 A</td>
+                        <td>2.4 s</td>
+                        <td>3.8 s</td>
+                        <td><span class="result-normal">Normal</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>1,244</td>
+                        <td>14:21:59</td>
+                        <td>6.2 A</td>
+                        <td>2.4 s</td>
+                        <td>3.7 s</td>
+                        <td><span class="result-normal">Normal</span></td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script
+    src="{{ url_for('static', filename='js/door.js') }}"
+    defer
+></script>
+{% endblock %}

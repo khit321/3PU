@@ -1,0 +1,90 @@
+/* ==================================================
+   RAILPULSE — MODERN TRANSIT DESIGN TOKENS
+   ================================================== */
+
+:root {
+    /* Backgrounds */
+    --page-background: #f4f3f0;
+    --surface: #ffffff;
+    --surface-soft: #f8f7f5;
+    --surface-selected: #f0edf8;
+
+    /* Text */
+    --text-primary: #202124;
+    --text-secondary: #62666b;
+    --text-muted: #8a8f94;
+    --text-on-dark: #ffffff;
+
+    /* Structure */
+    --border-light: #dedede;
+    --border-medium: #c8c9cb;
+    --divider: #e8e7e5;
+
+    /* RailPulse accents */
+    --rail-red: #d52035;
+    --rail-red-dark: #aa1728;
+    --rail-red-soft: #fbe9ec;
+
+    --rail-purple: #74649b;
+    --rail-purple-soft: #efecf7;
+
+    --rail-green: #218653;
+    --rail-green-soft: #e8f5ed;
+
+    --rail-amber: #b96a00;
+    --rail-amber-soft: #fff1d9;
+
+    /* MRT line colours */
+    --line-east-west: #009645;
+    --line-north-south: #d42e12;
+    --line-circle: #fa9e0d;
+    --line-downtown: #005ec4;
+
+    /* Controls */
+    --focus-colour: #5f4c92;
+    --button-dark: #25262a;
+    --button-dark-hover: #08090a;
+
+    /* Typography */
+    --font-interface:
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    --font-data:
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    /* Font sizes */
+    --text-xs: 0.78rem;
+    --text-sm: 0.9rem;
+    --text-md: 1rem;
+    --text-lg: 1.2rem;
+    --text-xl: 1.55rem;
+    --text-2xl: clamp(2rem, 4vw, 3.1rem);
+
+    /* Layout */
+    --content-width: 1440px;
+    --page-padding: clamp(18px, 4vw, 56px);
+    --section-gap: clamp(28px, 5vw, 64px);
+
+    /* Corners */
+    --radius-small: 3px;
+    --radius-medium: 6px;
+    --radius-pill: 999px;
+
+    /* Shadows */
+    --shadow-subtle:
+        0 1px 2px rgba(20, 20, 20, 0.05),
+        0 8px 24px rgba(20, 20, 20, 0.04);
+
+    --shadow-raised:
+        0 12px 30px rgba(25, 25, 25, 0.09);
+
+    /* Motion */
+    --transition-fast: 150ms ease;
+    --transition-standard: 220ms ease;
+}

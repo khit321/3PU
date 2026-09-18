@@ -1,0 +1,77 @@
+{
+  "generated_at": "2026-09-18T20:15:00+08:00",
+  "selected_train": "Train-07",
+  "fleet_score": 81,
+  "models": {
+    "doors": {
+      "model_status": "inference_complete",
+      "confidence": 0.84,
+      "status": "warning",
+      "score": 72,
+      "failing_asset": "D3-04",
+      "recommendation": "Inspect within 24 hours",
+      "door_cycle": {
+        "timestamps": [0, 1, 2, 3, 4, 5, 6],
+        "states": [
+          "Open",
+          "Open",
+          "Closing",
+          "Closing",
+          "Closing",
+          "Locked",
+          "Locked"
+        ],
+        "motor_current": [4.2, 4.5, 4.8, 6.1, 8.4, 8.2, 5.0],
+        "nominal_min": 3.8,
+        "nominal_max": 6.5
+      }
+    },
+    "acv": {
+      "model_status": "inference_complete",
+      "confidence": 0.92,
+      "status": "inspect",
+      "score": 68,
+      "suspect_car": "Car-01",
+      "cars": [
+        {"id": "Car-01", "temperature": 34.8, "variance": 6.82},
+        {"id": "Car-02", "temperature": 28.4, "variance": 2.41},
+        {"id": "Car-03", "temperature": 29.1, "variance": 2.66},
+        {"id": "Car-04", "temperature": 27.9, "variance": 2.18},
+        {"id": "Car-05", "temperature": 28.2, "variance": 2.37},
+        {"id": "Car-06", "temperature": 28.0, "variance": 2.24}
+      ]
+    },
+    "rail": {
+      "model_status": "inference_complete",
+      "confidence": 0.96,
+      "status": "normal",
+      "score": 94,
+      "inspection_id": "RC-001",
+      "track_section": "EW-14",
+      "inspection_position_m": 160,
+      "roughness_index": 0.18,
+      "profiles": {
+        "distances_m": [0, 40, 80, 120, 160, 200, 240, 280, 320],
+        "side_1": [0.12, 0.15, 0.14, 0.17, 0.24, 0.19, 0.18, 0.16, 0.15],
+        "side_2": [0.14, 0.16, 0.18, 0.20, 0.22, 0.21, 0.19, 0.17, 0.16]
+      },
+      "recommendation": "Continue routine monitoring"
+    },
+    "shm": {
+      "model_status": "inference_complete",
+      "confidence": 0.89,
+      "status": "review",
+      "score": 78,
+      "asset_id": "Viaduct-03",
+      "selected_zone": "Support-A",
+      "predicted_damage": 0.0286,
+      "zones": [
+        {"id": "deck-left", "label": "Deck Left", "status": "healthy", "strain": 112},
+        {"id": "deck-right", "label": "Deck Right", "status": "healthy", "strain": 119},
+        {"id": "support-a", "label": "Support A", "status": "review", "strain": 184},
+        {"id": "support-b", "label": "Support B", "status": "healthy", "strain": 108}
+      ],
+      "recommendation": "Inspect Support A within 48 hours"
+    }
+  }
+}

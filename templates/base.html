@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="RailPulse train condition monitoring"
+    >
+
+    <title>
+        {% block title %}RailPulse{% endblock %}
+    </title>
+
+    <link
+        rel="icon"
+        href="{{ url_for('static', filename='train-logo.png') }}"
+    >
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+>
+
+     
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/base.css') }}"
+>
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/components.css') }}"
+>
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/navigation.css') }}">
+
+    {% block page_styles %}{% endblock %}
+
+<script>
+    (() => {
+        const duration = 18000;
+        const storageKey = "railpulse-train-start";
+
+        let startTime = Number(
+            sessionStorage.getItem(storageKey)
+        );
+
+        if (!Number.isFinite(startTime) || startTime <= 0) {
+            startTime = Date.now();
+
+            sessionStorage.setItem(
+                storageKey,
+                String(startTime)
+            );
+        }
+
+        const elapsed = (Date.now() - startTime) % duration;
+
+        document.documentElement.style.setProperty(
+            "--train-delay",
+            `-${elapsed}ms`
+        );
+    })();
+</script>
+</head>
+
+
+<body class="{% block page_class %}{% endblock %}">
+
+    <!-- Accessible skip link -->
+    <a href="#main-content" class="skip-link">
+        Skip to main content
+    </a>
+
+
+    <!-- Navigation -->
+    <header class="top-navigation">
+
+        <!-- Brand -->
+        <a
+            href="{{ url_for('overview') }}"
+            class="brand"
+            aria-label="RailPulse overview"
+        >
+            <span class="brand-mark" aria-hidden="true">
+                <img
+                    src="{{ url_for('static', filename='train-logo.png') }}"
+                    alt=""
+                >
+            </span>
+
+            <span class="brand-copy">
+                <strong>RailPulse</strong>
+            </span>
+        </a>
+
+
+        <!-- Main tabs -->
+        <nav
+    class="main-navigation"
+    aria-label="RailPulse systems"
+    data-keyboard-nav
+>
+    <a
+        href="{{ url_for('overview') }}"
+        class="navigation-link {% if request.endpoint == 'overview' %}active{% endif %}"
+        {% if request.endpoint == 'overview' %}aria-current="page"{% endif %}
+    >
+        <span class="navigation-text" aria-hidden="true">
+            <span>Overview</span>
+            <span>Overview</span>
+            <span>Overview</span>
+        </span>
+    </a>
+
+    <a
+        href="{{ url_for('door_monitoring') }}"
+        class="navigation-link {% if request.endpoint == 'door_monitoring' %}active{% endif %}"
+        {% if request.endpoint == 'door_monitoring' %}aria-current="page"{% endif %}
+    >
+        <span class="navigation-text" aria-hidden="true">
+            <span>Doors</span>
+            <span>Doors</span>
+            <span>Doors</span>
+        </span>
+    </a>
+
+    <a
+        href="{{ url_for('acv_monitoring') }}"
+        class="navigation-link {% if request.endpoint == 'acv_monitoring' %}active{% endif %}"
+        {% if request.endpoint == 'acv_monitoring' %}aria-current="page"{% endif %}
+    >
+        <span class="navigation-text" aria-hidden="true">
+            <span>ACV</span>
+            <span>ACV</span>
+            <span>ACV</span>
+        </span>
+    </a>
+
+    <a
+        href="{{ url_for('rail_monitoring') }}"
+        class="navigation-link {% if request.endpoint == 'rail_monitoring' %}active{% endif %}"
+        {% if request.endpoint == 'rail_monitoring' %}aria-current="page"{% endif %}
+    >
+        <span class="navigation-text" aria-hidden="true">
+            <span>Rail Corrugation</span>
+            <span>Rail Corrugation</span>
+            <span>Rail Corrugation</span>
+        </span>
+    </a>
+
+    <a
+        href="{{ url_for('shm_monitoring') }}"
+        class="navigation-link {% if request.endpoint == 'shm_monitoring' %}active{% endif %}"
+        {% if request.endpoint == 'shm_monitoring' %}aria-current="page"{% endif %}
+    >
+        <span class="navigation-text" aria-hidden="true">
+            <span>Structural Health</span>
+            <span>Structural Health</span>
+            <span>Structural Health</span>
+        </span>
+    </a>
+</nav>
+<div class="header-rail" aria-hidden="true">
+    <span class="moving-train">
+        <i class="mini-train-front"></i>
+        <i></i>
+        <i></i>
+    </span>
+</div>
+
+    </header>
+
+
+    <!-- Page content -->
+    <main id="main-content" tabindex="-1">
+        {% block content %}{% endblock %}
+    </main>
+
+
+    <!-- RailBot launcher -->
+        <button
+        class="railbot-launcher"
+        id="railbot-launcher"
+        type="button"
+        aria-label="Ask RailBot"
+        aria-expanded="false"
+    >
+        <img
+            src="{{ url_for('static', filename='railbot-avatar.png') }}"
+            alt=""
+        >
+    </button>
+
+
+    <!-- Shared JavaScript -->
+    <script
+    src="{{ url_for('static', filename='js/railpulse.js') }}"
+    defer
+></script>
+
+    {% block scripts %}{% endblock %}
+
+</body>
+
+</html>

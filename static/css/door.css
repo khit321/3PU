@@ -1,0 +1,1196 @@
+/* ==================================================
+   RAILPULSE — DOOR MONITORING
+   ================================================== */
+
+.door-page {
+    --door-ink: #18181b;
+    --door-muted: #717178;
+    --door-line: #d8d8dc;
+    --door-background: #f3f3f0;
+    --door-surface: #ffffff;
+    --door-red: #df293a;
+    --door-red-soft: #fff0f2;
+    --door-green: #197052;
+    --door-dark: #202125;
+    --door-window: #243f4b;
+
+    background: var(--door-background);
+    color: var(--door-ink);
+    font-family: "Instrument Sans", Arial, sans-serif;
+}
+
+
+.door-dashboard {
+    box-sizing: border-box;
+
+    width: calc(100% - 48px);
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: clamp(54px, 6vw, 90px) 0 80px;
+}
+
+
+/* ==================================================
+   HEADER
+   ================================================== */
+
+.door-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 620px;
+    align-items: end;
+    gap: 60px;
+
+    min-height: 0;
+    margin-bottom: 48px;
+    padding: 0;
+}
+
+.door-header h1 {
+    margin: 0;
+
+    font-family: "Instrument Sans", Arial, sans-serif;
+    font-size: clamp(3.8rem, 6vw, 6.2rem);
+    font-weight: 650;
+    line-height: 0.94;
+    letter-spacing: -0.068em;
+    color: #171719;
+}
+
+.door-controls {
+    position: static;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+    gap: 20px;
+
+    width: 100%;
+}
+
+.door-controls label {
+    display: grid;
+    gap: 10px;
+    min-width: 0;
+}
+
+.door-controls label > span {
+    color: #61616b;
+
+    font-family: "Instrument Sans", Arial, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.door-controls select {
+    width: 100%;
+    height: 58px;
+    padding: 0 42px 0 17px;
+
+    border: 1px solid #ccccd2;
+    border-radius: 2px;
+
+    background: #ffffff;
+    color: #171719;
+
+    font-family: "Instrument Sans", Arial, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.door-summary {
+    margin-top: 0;
+    margin-bottom: 28px;
+}
+
+/* ==================================================
+   CURRENT READINGS
+   ================================================== */
+
+.door-reading-strip {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+
+    border-top: 1px solid #c6c6ca;
+    border-bottom: 1px solid #c6c6ca;
+
+    margin-bottom: 28px;
+
+    background: transparent;
+}
+
+
+.door-reading-strip > div {
+    min-width: 0;
+    padding: 25px 24px;
+
+    border-right: 1px solid var(--door-line);
+
+    background: transparent;
+}
+
+
+.door-reading-strip > div:first-child {
+    padding-left: 24px;
+}
+
+
+.door-reading-strip > div:last-child {
+    padding-right: 24px;
+    border-right: 0;
+}
+
+
+.door-reading-strip span,
+.door-reading-strip small {
+    display: block;
+    color: var(--door-muted);
+    font-size: 0.71rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+
+.door-reading-strip strong {
+    display: block;
+    margin-top: 8px;
+
+    color: var(--door-ink);
+
+    font-size: clamp(1rem, 1.4vw, 1.3rem);
+    font-weight: 680;
+    line-height: 1.25;
+}
+
+
+.door-reading-strip small {
+    margin-top: 4px;
+}
+
+
+.door-reading-strip .reading-connected {
+    color: var(--door-green);
+}
+
+
+.door-reading-strip .reading-warning {
+    color: var(--door-red);
+}
+
+
+/* ==================================================
+   MAIN WORKSPACE
+   ================================================== */
+
+.door-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+
+    border: 1px solid var(--door-line);
+
+    background: var(--door-surface);
+}
+
+
+.door-signal-panel {
+    min-width: 0;
+    padding: 34px;
+
+    border-right: 1px solid var(--door-line);
+}
+
+
+.panel-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+
+.panel-heading span {
+    color: var(--door-muted);
+
+    font-size: 0.72rem;
+    font-weight: 650;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+
+.panel-heading h2 {
+    margin: 7px 0 0;
+
+    color: var(--door-ink);
+
+    font-size: 1.35rem;
+    font-weight: 680;
+    letter-spacing: -0.025em;
+}
+
+
+.signal-status {
+    padding: 7px 10px;
+
+    border: 1px solid currentColor;
+    border-radius: 2px;
+
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+
+.signal-status-warning {
+    color: var(--door-red);
+    background: var(--door-red-soft);
+}
+
+
+/* ==================================================
+   CHART TOOLBAR
+   ================================================== */
+
+.chart-toolbar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 28px;
+
+    margin-top: 36px;
+}
+
+
+.chart-reading {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.chart-reading strong {
+    color: var(--door-ink);
+
+    font-size: 2.2rem;
+    font-weight: 650;
+    line-height: 1;
+    letter-spacing: -0.05em;
+}
+
+
+.chart-reading span {
+    margin-top: 5px;
+
+    color: var(--door-muted);
+    font-size: 0.7rem;
+}
+
+
+.time-range {
+    display: flex;
+
+    border: 1px solid var(--door-line);
+}
+
+
+.time-button {
+    min-height: 39px;
+    padding: 0 15px;
+
+    border: 0;
+    border-right: 1px solid var(--door-line);
+
+    background: var(--door-surface);
+    color: var(--door-muted);
+
+    font: 650 0.72rem/1 "Instrument Sans", Arial, sans-serif;
+
+    cursor: pointer;
+    transition:
+        background 180ms ease,
+        color 180ms ease;
+}
+
+
+.time-button:last-child {
+    border-right: 0;
+}
+
+
+.time-button:hover {
+    color: var(--door-red);
+}
+
+
+.time-button.active {
+    background: var(--door-ink);
+    color: #ffffff;
+}
+
+
+/* ==================================================
+   TELEMETRY CHART
+   ================================================== */
+
+.door-chart {
+    position: relative;
+
+    margin-top: 20px;
+    padding: 15px 15px 13px;
+
+    overflow: hidden;
+
+    background: var(--door-dark);
+}
+
+
+.door-chart svg {
+    display: block;
+
+    width: 100%;
+    height: 350px;
+}
+
+
+.chart-grid line {
+    stroke: #393a3f;
+    stroke-width: 1;
+}
+
+
+.expected-range {
+    fill: rgba(255, 255, 255, 0.07);
+}
+
+
+.warning-threshold {
+    stroke: var(--door-red);
+    stroke-width: 2;
+    stroke-dasharray: 9 9;
+}
+
+
+.motor-signal {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+.signal-point {
+    fill: var(--door-red);
+    stroke: #ffffff;
+    stroke-width: 4;
+
+    transform-box: fill-box;
+    transform-origin: center;
+
+    animation: signal-pulse 1.7s ease-out infinite;
+}
+
+
+.chart-labels text {
+    fill: #a5a5ab;
+
+    font-family: "Instrument Sans", Arial, sans-serif;
+    font-size: 12px;
+}
+
+
+.chart-legend {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 22px;
+
+    padding: 7px 46px 0;
+
+    color: #bcbcc1;
+    font-size: 0.68rem;
+}
+
+
+.chart-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+.chart-legend span::before {
+    width: 20px;
+    height: 2px;
+
+    content: "";
+    background: #ffffff;
+}
+
+
+.chart-legend .legend-range::before {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.17);
+}
+
+
+.chart-legend .legend-threshold::before {
+    background: var(--door-red);
+}
+
+
+@keyframes signal-pulse {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    70% {
+        opacity: 0.55;
+        transform: scale(1.55);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* ==================================================
+   DOOR MECHANISM
+   ================================================== */
+
+.door-mechanism-panel {
+    padding: 30px 27px;
+
+    background: #f8f8f6;
+}
+
+
+.component-warning {
+    padding: 7px 9px;
+
+    border: 1px solid var(--door-red);
+    border-radius: 2px;
+
+    color: var(--door-red);
+
+    font-size: 0.7rem;
+}
+
+
+.door-mechanism {
+    margin-top: 38px;
+}
+
+
+.door-frame {
+    position: relative;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    width: min(100%, 270px);
+    height: 260px;
+    margin: 0 auto;
+
+    overflow: hidden;
+
+    border: 8px solid #3e3e43;
+
+    background: #c7c7c9;
+    box-shadow:
+        inset 0 -9px 0 #a9a9ad,
+        0 17px 30px rgba(25, 25, 28, 0.12);
+}
+
+
+.door-frame::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    z-index: 4;
+
+    width: 2px;
+
+    content: "";
+    background: #68686d;
+    transform: translateX(-50%);
+}
+
+
+.door-leaf {
+    position: relative;
+    z-index: 2;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d9d9da,
+            #eeeeef 45%,
+            #c7c7ca
+        );
+
+    transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.door-leaf-left {
+    border-right: 1px solid #818187;
+}
+
+
+.door-leaf-right {
+    border-left: 1px solid #818187;
+}
+
+
+.door-window {
+    position: absolute;
+    top: 28px;
+    right: 17px;
+    left: 17px;
+
+    height: 95px;
+
+    border: 4px solid #303034;
+
+    background:
+        linear-gradient(
+            145deg,
+            #162d36,
+            var(--door-window)
+        );
+}
+
+
+.door-window::after {
+    position: absolute;
+    top: 0;
+    right: 9px;
+
+    width: 20px;
+    height: 100%;
+
+    content: "";
+    background: rgba(255, 255, 255, 0.07);
+    transform: skewX(-11deg);
+}
+
+
+.door-handle {
+    position: absolute;
+    top: 157px;
+
+    width: 4px;
+    height: 38px;
+
+    background: #77777c;
+}
+
+
+.door-leaf-left .door-handle {
+    right: 14px;
+}
+
+
+.door-leaf-right .door-handle {
+    left: 14px;
+}
+
+
+.door-opening {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    z-index: 1;
+
+    width: var(--door-opening, 0%);
+
+    background: #1d1d20;
+    transform: translateX(-50%);
+    transition: width 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.door-mechanism.is-open .door-leaf-left {
+    transform: translateX(-48%);
+}
+
+
+.door-mechanism.is-open .door-leaf-right {
+    transform: translateX(48%);
+}
+
+
+.door-position-scale {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 11px;
+
+    margin-top: 26px;
+
+    color: var(--door-muted);
+    font-size: 0.65rem;
+}
+
+
+.door-position-scale > div {
+    position: relative;
+
+    height: 3px;
+
+    background: #d0d0d3;
+}
+
+
+.door-position-scale i {
+    position: absolute;
+    top: 50%;
+
+    width: 11px;
+    height: 11px;
+
+    border-radius: 50%;
+
+    background: var(--door-red);
+    transform: translate(-50%, -50%);
+    transition: left 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+/* ==================================================
+   MECHANISM READINGS
+   ================================================== */
+
+.mechanism-readings {
+    margin: 32px 0 0;
+}
+
+
+.mechanism-readings > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    padding: 15px 0;
+
+    border-bottom: 1px solid var(--door-line);
+}
+
+
+.mechanism-readings dt {
+    color: var(--door-muted);
+    font-size: 0.73rem;
+}
+
+
+.mechanism-readings dd {
+    margin: 0;
+
+    color: var(--door-ink);
+
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+
+/* ==================================================
+   SECTION HEADINGS
+   ================================================== */
+
+.door-state-section,
+.door-cycle-section {
+    margin-top: 65px;
+}
+
+
+.section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 30px;
+
+    margin-bottom: 22px;
+}
+
+
+.section-heading span {
+    color: var(--door-muted);
+    font-size: 0.72rem;
+}
+
+
+.section-heading h2 {
+    margin: 7px 0 0;
+
+    color: var(--door-ink);
+
+    font-size: 1.5rem;
+    font-weight: 680;
+    letter-spacing: -0.035em;
+}
+
+
+.section-heading > strong {
+    font-size: 0.82rem;
+}
+
+
+/* ==================================================
+   STATE TIMELINE
+   ================================================== */
+
+.state-timeline {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+
+    border-top: 1px solid var(--door-line);
+    border-bottom: 1px solid var(--door-line);
+}
+
+
+.state-step {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    min-height: 135px;
+    padding: 23px;
+
+    border-right: 1px solid var(--door-line);
+}
+
+
+.state-step:last-child {
+    border-right: 0;
+}
+
+
+.state-step::before {
+    width: 9px;
+    height: 9px;
+    margin-bottom: 21px;
+
+    border: 2px solid #94949a;
+    border-radius: 50%;
+
+    content: "";
+    background: var(--door-background);
+}
+
+
+.state-step:not(:last-child)::after {
+    position: absolute;
+    top: 28px;
+    left: 35px;
+
+    width: calc(100% - 24px);
+    height: 1px;
+
+    content: "";
+    background: #bcbcc0;
+}
+
+
+.state-step.completed::before {
+    border-color: var(--door-green);
+    background: var(--door-green);
+}
+
+
+.state-step.active {
+    background: var(--door-red-soft);
+}
+
+
+.state-step.active::before {
+    border-color: var(--door-red);
+    background: var(--door-red);
+}
+
+
+.state-step.active::after {
+    background: var(--door-red);
+}
+
+
+.state-step small {
+    color: var(--door-muted);
+    font-size: 0.66rem;
+}
+
+
+.state-step strong {
+    margin-top: 7px;
+
+    font-size: 0.85rem;
+}
+
+
+.state-step span {
+    margin-top: 5px;
+
+    color: var(--door-muted);
+    font-size: 0.72rem;
+}
+
+
+/* ==================================================
+   CYCLE TABLE
+   ================================================== */
+
+.cycle-table-wrapper {
+    overflow-x: auto;
+
+    border-top: 1px solid var(--door-line);
+    border-bottom: 1px solid var(--door-line);
+}
+
+
+.cycle-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    background: var(--door-surface);
+}
+
+
+.cycle-table th,
+.cycle-table td {
+    padding: 17px 18px;
+
+    border-bottom: 1px solid #e2e2e4;
+
+    text-align: left;
+}
+
+
+.cycle-table th {
+    color: var(--door-muted);
+
+    font-size: 0.69rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+
+.cycle-table td {
+    color: var(--door-ink);
+    font-size: 0.8rem;
+}
+
+
+.cycle-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+
+.cycle-table tbody tr:hover {
+    background: #f7f7f5;
+}
+
+
+.cycle-table .cycle-warning {
+    background: var(--door-red-soft);
+}
+
+
+.result-normal,
+.result-warning {
+    display: inline-block;
+
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+
+.result-normal {
+    color: var(--door-green);
+}
+
+
+.result-warning {
+    color: var(--door-red);
+}
+
+
+/* ==================================================
+   TABLET
+   ================================================== */
+
+@media (max-width: 1100px) {
+    .door-header {
+        grid-template-columns: 1fr;
+        align-items: start;
+        gap: 38px;
+    }
+
+    .door-controls {
+        width: min(100%, 600px);
+    }
+
+    .door-reading-strip {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .door-reading-strip > div {
+        padding: 20px;
+        border-bottom: 1px solid var(--door-line);
+    }
+
+    .door-reading-strip > div:first-child {
+        padding-left: 20px;
+    }
+
+    .door-workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .door-signal-panel {
+        border-right: 0;
+        border-bottom: 1px solid var(--door-line);
+    }
+
+    .door-mechanism-panel {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 35px;
+    }
+
+    .door-mechanism-panel .panel-heading {
+        grid-column: 1 / -1;
+    }
+
+    .mechanism-readings {
+        margin-top: 15px;
+    }
+
+    .state-timeline {
+        overflow-x: auto;
+    }
+
+    .state-step {
+        min-width: 190px;
+    }
+}
+
+
+/* ==================================================
+   MOBILE
+   ================================================== */
+
+@media (max-width: 700px) {
+    .door-dashboard {
+        width: calc(100% - 28px);
+        padding-top: 45px;
+    }
+
+    .door-heading-copy h1 {
+        font-size: clamp(3rem, 15vw, 4.5rem);
+    }
+
+    .door-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .door-reading-strip {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .door-reading-strip > div:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .door-signal-panel,
+    .door-mechanism-panel {
+        padding: 23px 18px;
+    }
+
+    .door-mechanism-panel {
+        display: block;
+    }
+
+    .chart-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .time-range {
+        width: 100%;
+    }
+
+    .time-button {
+        flex: 1;
+    }
+
+    .door-chart {
+        padding-right: 4px;
+        padding-left: 4px;
+    }
+
+    .door-chart svg {
+        min-width: 720px;
+    }
+
+    .door-chart {
+        overflow-x: auto;
+    }
+
+    .chart-legend {
+        min-width: 690px;
+        padding-left: 47px;
+    }
+
+    .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .cycle-table {
+        min-width: 760px;
+    }
+}
+
+
+@media (max-width: 460px) {
+    .door-reading-strip {
+        grid-template-columns: 1fr;
+    }
+
+    .door-reading-strip > div:last-child {
+        grid-column: auto;
+    }
+
+    .door-frame {
+        height: 230px;
+    }
+}
+
+
+/* ==================================================
+   REDUCED MOTION
+   ================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .signal-point {
+        animation: none;
+    }
+
+    .door-leaf,
+    .door-opening,
+    .door-position-scale i {
+        transition: none;
+    }
+}
+
+.component-normal {
+    padding: 7px 9px;
+
+    border: 1px solid var(--door-green);
+    border-radius: 2px;
+
+    color: var(--door-green);
+
+    font-size: 0.7rem;
+}
+/* Match the typography used by Overview and Doors */
+
+.acv-page,
+.acv-page button,
+.acv-page input,
+.acv-page select,
+.acv-page textarea,
+.acv-page table,
+
+.rail-page,
+.rail-page button,
+.rail-page input,
+.rail-page select,
+.rail-page textarea,
+.rail-page table,
+
+.shm-page,
+.shm-page button,
+.shm-page input,
+.shm-page select,
+.shm-page textarea,
+.shm-page table {
+    font-family: "Instrument Sans", Arial, sans-serif;
+}
+.door-summary {
+    margin-top: 0;
+    margin-bottom: 28px;
+}
+@media (max-width: 1100px) {
+    .door-header {
+        grid-template-columns: 1fr;
+        align-items: start;
+        gap: 32px;
+    }
+
+    .door-controls {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    .door-controls {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==================================================
+   LOCKED REFERENCE FRAME
+   This is the sizing reference used by every page.
+   ================================================== */
+
+.door-dashboard {
+    box-sizing: border-box;
+    width: calc(100% - 48px);
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: clamp(54px, 6vw, 90px) 0 80px;
+}
+
+.door-header {
+    align-items: end;
+    gap: 60px;
+    min-height: 0;
+    margin: 0 0 48px;
+    padding: 0;
+}
+
+.door-header h1 {
+    margin: 0;
+    font-family: "Instrument Sans", Arial, sans-serif;
+    font-size: clamp(3.8rem, 6vw, 6.2rem);
+    font-weight: 650;
+    line-height: .94;
+    letter-spacing: -.068em;
+}
+
+.door-reading-strip {
+    min-height: 0;
+    margin: 0 0 28px;
+}
+
+@media (max-width: 700px) {
+    .door-dashboard {
+        width: calc(100% - 32px);
+        padding: 42px 0 56px;
+    }
+
+    .door-header h1 {
+        font-size: clamp(3rem, 14vw, 4.5rem);
+    }
+}

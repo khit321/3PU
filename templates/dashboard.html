@@ -1,0 +1,448 @@
+{% extends "base.html" %}
+
+{% block title %}Overview | RailPulse{% endblock %}
+{% block page_class %}overview-page{% endblock %}
+
+{% block page_styles %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/overview.css') }}"
+>
+{% endblock %}
+
+
+{% block content %}
+<div class="overview-dashboard">
+
+    <!-- ==================================================
+         PAGE HEADER
+         ================================================== -->
+
+    <header class="overview-header">
+        <div class="overview-heading">
+            <h1>Condition overview</h1>
+        </div>
+
+        <label
+            class="overview-selector"
+            for="overview-train-selector"
+        >
+            <span>Selected train</span>
+
+            <select
+                id="overview-train-selector"
+                name="train"
+            >
+                <option value="train-07">
+                    Train 07 · East–West Line
+                </option>
+
+                <option value="train-12">
+                    Train 12 · North–South Line
+                </option>
+            </select>
+        </label>
+    </header>
+
+
+    <!-- ==================================================
+         ESSENTIAL FLEET READINGS
+         ================================================== -->
+
+    <section
+        class="overview-readings"
+        aria-label="Current fleet readings"
+    >
+        <div class="overview-reading">
+            <span>Fleet condition</span>
+
+            <strong>
+                <span id="overview-fleet-score">81</span>
+                <small>/100</small>
+            </strong>
+
+            <p id="overview-fleet-description" aria-live="polite">
+                Loading fleet condition…
+            </p>
+        </div>
+
+        <div class="overview-reading">
+            <span>Active warnings</span>
+
+            <strong
+                id="overview-warning-count"
+                class="warning-value"
+            >
+                02
+            </strong>
+
+            <p id="overview-warning-description">
+                Doors and ACV
+            </p>
+        </div>
+
+        <div class="overview-reading">
+            <span>Latest update</span>
+
+            <strong id="overview-clock">
+                --:--:--
+            </strong>
+
+            <p>Singapore time</p>
+        </div>
+    </section>
+
+
+    <!-- ==================================================
+         PRIMARY OPERATIONS VIEW
+         ================================================== -->
+
+    <section
+        class="operations-view"
+        aria-label="Fleet monitoring status"
+    >
+
+        <!-- System health matrix -->
+        <article class="health-matrix">
+            <header class="overview-section-header">
+                <div>
+                    <h2>Current assessment</h2>
+                </div>
+
+                <span>Four monitoring models</span>
+            </header>
+
+
+            <div class="health-list">
+
+                <!-- Doors -->
+                <a
+                    href="{{ url_for('door_monitoring') }}"
+                    class="health-row status-warning"
+                    data-system="doors"
+                >
+                    <span class="health-index">01</span>
+
+                    <div class="health-name">
+                        <strong>Doors</strong>
+                        <small id="doors-primary-asset">
+                            Door D3-04
+                        </small>
+                    </div>
+
+                    <div class="health-score">
+                        <strong id="doors-condition-score">72</strong>
+                        <small>/100</small>
+                    </div>
+
+                    <span
+                        id="doors-condition-status"
+                        class="health-state"
+                    >
+                        Attention
+                    </span>
+
+                    <span
+                        class="health-arrow"
+                        aria-hidden="true"
+                    >
+                        →
+                    </span>
+                </a>
+
+
+                <!-- ACV -->
+                <a
+                    href="{{ url_for('acv_monitoring') }}"
+                    class="health-row status-warning"
+                    data-system="acv"
+                >
+                    <span class="health-index">02</span>
+
+                    <div class="health-name">
+                        <strong>ACV</strong>
+                        <small id="acv-primary-asset">
+                            Car 01
+                        </small>
+                    </div>
+
+                    <div class="health-score">
+                        <strong id="acv-condition-score">68</strong>
+                        <small>/100</small>
+                    </div>
+
+                    <span
+                        id="acv-condition-status"
+                        class="health-state"
+                    >
+                        Inspect
+                    </span>
+
+                    <span
+                        class="health-arrow"
+                        aria-hidden="true"
+                    >
+                        →
+                    </span>
+                </a>
+
+
+                <!-- Rail Corrugation -->
+                <a
+                    href="{{ url_for('rail_monitoring') }}"
+                    class="health-row status-normal"
+                    data-system="rail"
+                >
+                    <span class="health-index">03</span>
+
+                    <div class="health-name">
+                        <strong>Rail Corrugation</strong>
+                        <small id="rail-primary-asset">
+                            Track EW-14
+                        </small>
+                    </div>
+
+                    <div class="health-score">
+                        <strong id="rail-condition-score">94</strong>
+                        <small>/100</small>
+                    </div>
+
+                    <span
+                        id="rail-condition-status"
+                        class="health-state"
+                    >
+                        Normal
+                    </span>
+
+                    <span
+                        class="health-arrow"
+                        aria-hidden="true"
+                    >
+                        →
+                    </span>
+                </a>
+
+
+                <!-- Structural Health -->
+                <a
+                    href="{{ url_for('shm_monitoring') }}"
+                    class="health-row status-review"
+                    data-system="shm"
+                >
+                    <span class="health-index">04</span>
+
+                    <div class="health-name">
+                        <strong>Structural Health</strong>
+                        <small id="shm-primary-asset">
+                            Support A
+                        </small>
+                    </div>
+
+                    <div class="health-score">
+                        <strong id="shm-condition-score">78</strong>
+                        <small>/100</small>
+                    </div>
+
+                    <span
+                        id="shm-condition-status"
+                        class="health-state"
+                    >
+                        Review
+                    </span>
+
+                    <span
+                        class="health-arrow"
+                        aria-hidden="true"
+                    >
+                        →
+                    </span>
+                </a>
+
+            </div>
+        </article>
+
+
+        <!-- Network condition chart -->
+        <article class="condition-panel">
+            <header class="overview-section-header">
+                <div>
+                    <h2>Network movement</h2>
+                </div>
+
+                <div
+                    class="chart-period-selector"
+                    role="group"
+                    aria-label="Condition-chart period"
+                >
+                    <button
+                        type="button"
+                        data-period="1H"
+                    >
+                        1H
+                    </button>
+
+                    <button
+                        type="button"
+                        data-period="6H"
+                    >
+                        6H
+                    </button>
+
+                    <button
+                        type="button"
+                        class="active"
+                        data-period="24H"
+                    >
+                        24H
+                    </button>
+                </div>
+            </header>
+
+
+            <div class="condition-chart-header">
+                <div>
+                    <span>Network condition</span>
+
+                    <strong>
+                        <span id="current-network-condition">81</span>
+                        <small>/100</small>
+                    </strong>
+                </div>
+
+                <div class="condition-legend">
+                    <span class="legend-normal">Normal</span>
+                    <span class="legend-warning">Attention</span>
+                </div>
+            </div>
+
+
+            <div class="condition-chart">
+                <canvas
+                    id="fleet-condition-chart"
+                    aria-label="Fleet condition history"
+                    role="img"
+                ></canvas>
+
+                <div
+                    id="chart-loading-state"
+                    class="chart-loading-state"
+                    hidden
+                >
+                    Loading condition data
+                </div>
+            </div>
+        </article>
+
+    </section>
+
+
+    <!-- ==================================================
+         LIVE EVENT FEED
+         ================================================== -->
+
+    <section class="event-feed">
+        <header class="overview-section-header">
+            <div>
+                <h2>Latest events</h2>
+            </div>
+
+            <span>
+                <span
+                    class="live-indicator"
+                    aria-hidden="true"
+                ></span>
+
+                Live monitoring
+            </span>
+        </header>
+
+
+        <ol
+            id="overview-event-list"
+            class="event-list"
+        >
+            <li class="event-row event-warning">
+                <time datetime="14:32:16">
+                    14:32:16
+                </time>
+
+                <span class="event-system">
+                    Doors
+                </span>
+
+                <strong>
+                    Motor current exceeded the learned range
+                </strong>
+
+                <span class="event-asset">
+                    D3-04
+                </span>
+
+                <a href="{{ url_for('door_monitoring') }}">
+                    Review →
+                </a>
+            </li>
+
+
+            <li class="event-row event-warning">
+                <time datetime="14:29:04">
+                    14:29:04
+                </time>
+
+                <span class="event-system">
+                    ACV
+                </span>
+
+                <strong>
+                    Temperature variance increased
+                </strong>
+
+                <span class="event-asset">
+                    Car 01
+                </span>
+
+                <a href="{{ url_for('acv_monitoring') }}">
+                    Review →
+                </a>
+            </li>
+
+
+            <li class="event-row event-normal">
+                <time datetime="13:57:10">
+                    13:57:10
+                </time>
+
+                <span class="event-system">
+                    Rail
+                </span>
+
+                <strong>
+                    Track-profile inspection completed
+                </strong>
+
+                <span class="event-asset">
+                    EW-14
+                </span>
+
+                <a href="{{ url_for('rail_monitoring') }}">
+                    View →
+                </a>
+            </li>
+        </ol>
+    </section>
+
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script
+    src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"
+    defer
+></script>
+
+<script
+    src="{{ url_for('static', filename='js/overview.js') }}"
+    defer
+></script>
+{% endblock %}

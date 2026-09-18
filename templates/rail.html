@@ -1,0 +1,640 @@
+{% extends "base.html" %}
+
+{% block title %}Rail Corrugation | RailPulse{% endblock %}
+{% block page_class %}rail-page{% endblock %}
+
+{% block page_styles %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/rail.css') }}"
+>
+{% endblock %}
+
+
+{% block content %}
+
+<main class="rail-dashboard">
+
+    <!-- ==============================================
+         PAGE HEADER
+         ============================================== -->
+
+    <header class="rail-header">
+
+        <div class="rail-introduction">
+            <h1>Rail surface condition</h1>
+            <div></div>
+        </div>
+
+
+        <label class="inspection-selector">
+            <span>Inspection record</span>
+
+            <select id="inspection-selector">
+                <option value="001">Inspection 001</option>
+                <option value="002">Inspection 002</option>
+                <option value="003">Inspection 003</option>
+                <option value="004">Inspection 004</option>
+                <option value="005">Inspection 005</option>
+                <option value="006">Inspection 006</option>
+            </select>
+        </label>
+
+    </header>
+
+
+    <!-- ==============================================
+         SUMMARY
+         ============================================== -->
+
+    <section class="rail-summary" aria-label="Inspection summary">
+
+        <div>
+            <span>Inspection ID</span>
+            <strong id="inspection-id">RC-001</strong>
+        </div>
+
+        <div>
+            <span>Track section</span>
+            <strong id="track-section">EW-14 / 320 m</strong>
+        </div>
+
+        <div>
+            <span>Detected class</span>
+            <strong id="detected-class" class="summary-normal">
+                Normal
+            </strong>
+        </div>
+
+        <div>
+            <span>Model confidence</span>
+            <strong id="model-confidence">96%</strong>
+        </div>
+
+        <div>
+            <span>Last inspection</span>
+            <strong id="inspection-time">14:42:10</strong>
+        </div>
+
+    </section>
+
+
+    <!-- ==============================================
+         MAIN TRACK WORKSPACE
+         ============================================== -->
+
+    <section class="track-workspace">
+
+        <div class="track-analysis-panel">
+
+            <header class="panel-heading">
+
+                <div>
+                    <p class="section-number">01 / TRACK PROFILE</p>
+                    <h2>Rail condition map</h2>
+
+                    <p>
+                        Select either rail side to inspect its measured
+                        surface profile.
+                    </p>
+                </div>
+
+
+                <div class="track-legend" aria-label="Track condition legend">
+                    <span>
+                        <i class="normal-key"></i>
+                        Normal
+                    </span>
+
+                    <span>
+                        <i class="warning-key"></i>
+                        Corrugation detected
+                    </span>
+                </div>
+
+            </header>
+
+
+            <!-- ======================================
+                 TRACK VISUAL
+                 ====================================== -->
+
+            <div class="track-map">
+
+                <div class="distance-label distance-start">0 m</div>
+                <div class="distance-label distance-quarter">80 m</div>
+                <div class="distance-label distance-middle">160 m</div>
+                <div class="distance-label distance-three-quarter">240 m</div>
+                <div class="distance-label distance-end">320 m</div>
+
+
+                <button
+                    class="rail-side selected"
+                    data-side="side-1"
+                    type="button"
+                    aria-pressed="true"
+                >
+                    <span class="side-name">SIDE I</span>
+
+                    <span class="rail-surface">
+                        <span class="surface-segment"></span>
+                        <span class="surface-segment"></span>
+                        <span class="surface-segment"></span>
+                        <span class="surface-segment"></span>
+                        <span class="surface-segment"></span>
+                        <span class="surface-segment"></span>
+                        <span class="surface-segment"></span>
+                        <span class="surface-segment"></span>
+                    </span>
+
+                    <strong class="side-condition">Normal</strong>
+                </button>
+
+
+                <div class="track-sleepers" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+
+                <button
+                    class="rail-side"
+                    data-side="side-2"
+                    type="button"
+                    aria-pressed="false"
+                >
+                    <span class="side-name">SIDE II</span>
+
+                    <span class="rail-surface">
+                        <span class="surface-segment"></span>
+                        <span class="surface-segment"></span>
+                        <span class="surface-segment"></span>
+                        <span class="surface-segment"></span>
+                        <span class="surface-segment"></span>
+                        <span class="surface-segment"></span>
+                        <span class="surface-segment"></span>
+                        <span class="surface-segment"></span>
+                    </span>
+
+                    <strong class="side-condition">Normal</strong>
+                </button>
+
+
+                <div class="inspection-marker" id="inspection-marker">
+                    <span>Inspection position</span>
+                    <strong id="marker-position">160 m</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================
+             SELECTED SIDE DETAILS
+             ========================================== -->
+
+        <aside class="rail-detail-panel">
+
+            <p class="detail-label">SELECTED RAIL</p>
+
+            <div class="selected-side-heading">
+                <h2 id="selected-side-name">Side I</h2>
+
+                <span
+                    id="selected-side-status"
+                    class="condition-status normal-status"
+                >
+                    Normal
+                </span>
+            </div>
+
+
+            <div class="condition-score">
+
+                <span>Condition score</span>
+
+                <strong id="condition-score">
+                    94
+                    <small>/100</small>
+                </strong>
+
+                <div
+                    class="condition-scale"
+                    aria-label="Rail condition score"
+                >
+                    <span
+                        id="condition-scale-fill"
+                        style="--condition-width: 94%;"
+                    ></span>
+                </div>
+
+            </div>
+
+
+            <dl class="rail-readings">
+
+                <div>
+                    <dt>Roughness index</dt>
+                    <dd id="roughness-value">0.18</dd>
+                </div>
+
+                <div>
+                    <dt>Dominant frequency</dt>
+                    <dd id="frequency-value">42 Hz</dd>
+                </div>
+
+                <div>
+                    <dt>Peak amplitude</dt>
+                    <dd id="amplitude-value">0.12 mm</dd>
+                </div>
+
+                <div>
+                    <dt>Classification</dt>
+                    <dd id="classification-value">Normal</dd>
+                </div>
+
+            </dl>
+
+
+            <div class="inspection-action">
+                <span>Recommended action</span>
+
+                <strong id="recommended-action">
+                    Continue routine inspection
+                </strong>
+            </div>
+
+        </aside>
+
+    </section>
+
+
+    <!-- ==============================================
+         SURFACE PROFILE
+         ============================================== -->
+
+    <section class="profile-section">
+
+        <header class="section-heading">
+
+            <div>
+                <p class="section-number">02 / SURFACE RESPONSE</p>
+                <h2>Measured rail profile</h2>
+            </div>
+
+            <p>
+                Amplitude measured along the selected track section.
+                The red line marks the review threshold.
+            </p>
+
+        </header>
+
+
+        <div class="profile-chart">
+
+            <div class="chart-y-axis" aria-hidden="true">
+                <span>0.60</span>
+                <span>0.45</span>
+                <span>0.30</span>
+                <span>0.15</span>
+                <span>0.00</span>
+            </div>
+
+
+            <div class="profile-plot">
+
+                <div class="threshold-line">
+                    <span>Review threshold</span>
+                </div>
+
+                <svg
+                    viewBox="0 0 1000 300"
+                    preserveAspectRatio="none"
+                    role="img"
+                    aria-label="Rail surface profile"
+                >
+                    <defs>
+                        <linearGradient
+                            id="profileAreaGradient"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                        >
+                            <stop
+                                offset="0%"
+                                stop-color="#df293a"
+                                stop-opacity="0.22"
+                            />
+                            <stop
+                                offset="100%"
+                                stop-color="#df293a"
+                                stop-opacity="0"
+                            />
+                        </linearGradient>
+                    </defs>
+
+                    <path
+                        id="profile-area"
+                        class="profile-area"
+                        d="
+                            M0 220
+                            L40 212
+                            L80 218
+                            L120 205
+                            L160 214
+                            L200 210
+                            L240 220
+                            L280 208
+                            L320 215
+                            L360 206
+                            L400 211
+                            L440 216
+                            L480 207
+                            L520 218
+                            L560 210
+                            L600 215
+                            L640 205
+                            L680 212
+                            L720 216
+                            L760 208
+                            L800 214
+                            L840 206
+                            L880 216
+                            L920 210
+                            L960 218
+                            L1000 212
+                            L1000 300
+                            L0 300 Z
+                        "
+                    ></path>
+
+                    <path
+                        id="profile-line"
+                        class="profile-line"
+                        d="
+                            M0 220
+                            L40 212
+                            L80 218
+                            L120 205
+                            L160 214
+                            L200 210
+                            L240 220
+                            L280 208
+                            L320 215
+                            L360 206
+                            L400 211
+                            L440 216
+                            L480 207
+                            L520 218
+                            L560 210
+                            L600 215
+                            L640 205
+                            L680 212
+                            L720 216
+                            L760 208
+                            L800 214
+                            L840 206
+                            L880 216
+                            L920 210
+                            L960 218
+                            L1000 212
+                        "
+                    ></path>
+                </svg>
+
+
+                <div class="chart-x-axis" aria-hidden="true">
+                    <span>0 m</span>
+                    <span>80 m</span>
+                    <span>160 m</span>
+                    <span>240 m</span>
+                    <span>320 m</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==============================================
+         CLASS DISTRIBUTION
+         ============================================== -->
+
+    <section class="distribution-section">
+
+        <header class="section-heading">
+
+            <div>
+                <p class="section-number">03 / DATASET OVERVIEW</p>
+                <h2>Inspection class distribution</h2>
+            </div>
+
+            <p>
+                Current label distribution from the available rail
+                corrugation dataset.
+            </p>
+
+        </header>
+
+
+        <div class="distribution-layout">
+
+            <div class="distribution-chart">
+
+                <div class="distribution-row">
+
+                    <div class="distribution-label">
+                        <strong>Normal</strong>
+                        <span>234 records</span>
+                    </div>
+
+                    <div class="distribution-track">
+                        <span
+                            class="distribution-fill normal-fill"
+                            style="--distribution-width: 86%;"
+                        ></span>
+                    </div>
+
+                    <strong class="distribution-percentage">86.0%</strong>
+
+                </div>
+
+
+                <div class="distribution-row">
+
+                    <div class="distribution-label">
+                        <strong>Side II</strong>
+                        <span>24 records</span>
+                    </div>
+
+                    <div class="distribution-track">
+                        <span
+                            class="distribution-fill warning-fill"
+                            style="--distribution-width: 8.8%;"
+                        ></span>
+                    </div>
+
+                    <strong class="distribution-percentage">8.8%</strong>
+
+                </div>
+
+
+                <div class="distribution-row">
+
+                    <div class="distribution-label">
+                        <strong>Side I</strong>
+                        <span>14 records</span>
+                    </div>
+
+                    <div class="distribution-track">
+                        <span
+                            class="distribution-fill warning-fill"
+                            style="--distribution-width: 5.2%;"
+                        ></span>
+                    </div>
+
+                    <strong class="distribution-percentage">5.2%</strong>
+
+                </div>
+
+            </div>
+
+
+            <aside class="dataset-note">
+
+                <span>AVAILABLE RECORDS</span>
+
+                <strong>272</strong>
+
+                <p>
+                    The dataset is imbalanced, with normal inspections
+                    forming most available samples.
+                </p>
+
+            </aside>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==============================================
+         RECENT INSPECTIONS
+         ============================================== -->
+
+    <section class="inspection-history-section">
+
+        <header class="section-heading">
+
+            <div>
+                <p class="section-number">04 / RECENT RESULTS</p>
+                <h2>Recent inspections</h2>
+            </div>
+
+            <p>
+                Demonstration results will be replaced with the final
+                model output during integration.
+            </p>
+
+        </header>
+
+
+        <div class="inspection-table-wrapper">
+
+            <table class="inspection-table">
+
+                <thead>
+                    <tr>
+                        <th>Inspection</th>
+                        <th>Track section</th>
+                        <th>Selected side</th>
+                        <th>Roughness index</th>
+                        <th>Confidence</th>
+                        <th>Condition</th>
+                    </tr>
+                </thead>
+
+                <tbody id="inspection-table-body">
+
+                    <tr>
+                        <td>RC-001</td>
+                        <td>EW-14 / 320 m</td>
+                        <td>Side I</td>
+                        <td>0.18</td>
+                        <td>96%</td>
+                        <td>
+                            <span class="table-normal">Normal</span>
+                        </td>
+                    </tr>
+
+                    <tr class="inspection-warning-row">
+                        <td>RC-002</td>
+                        <td>NS-09 / 185 m</td>
+                        <td>Side II</td>
+                        <td>0.71</td>
+                        <td>91%</td>
+                        <td>
+                            <span class="table-warning">
+                                Corrugation
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>RC-003</td>
+                        <td>CC-21 / 440 m</td>
+                        <td>Side I</td>
+                        <td>0.24</td>
+                        <td>94%</td>
+                        <td>
+                            <span class="table-normal">Normal</span>
+                        </td>
+                    </tr>
+
+                    <tr class="inspection-warning-row">
+                        <td>RC-004</td>
+                        <td>DT-12 / 275 m</td>
+                        <td>Side I</td>
+                        <td>0.66</td>
+                        <td>89%</td>
+                        <td>
+                            <span class="table-warning">
+                                Corrugation
+                            </span>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/rail.js') }}"></script>
+{% endblock %}

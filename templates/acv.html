@@ -1,0 +1,493 @@
+{% extends "base.html" %}
+
+{% block title %}ACV Monitoring | RailPulse{% endblock %}
+{% block page_class %}acv-page{% endblock %}
+
+{% block page_styles %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/acv.css') }}"
+>
+{% endblock %}
+
+{% block content %}
+<main class="acv-dashboard">
+
+    <!-- Page heading -->
+    <header class="acv-header">
+
+        <div>
+            <h1>Locate affected car</h1>
+            <div></div>
+        </div>
+
+        <label class="case-selector" for="acv-case">
+            <span>Analysis case</span>
+
+            <select id="acv-case" name="acv-case">
+                <option value="case-01">ACV Case 01</option>
+                <option value="case-02">ACV Case 02</option>
+                <option value="case-03">ACV Case 03</option>
+                <option value="case-04">ACV Case 04</option>
+                <option value="case-05">ACV Case 05</option>
+                <option value="case-06">ACV Case 06</option>
+            </select>
+        </label>
+
+    </header>
+
+
+    <!-- Result summary -->
+    <section class="acv-summary" aria-label="Current ACV result">
+
+        <div>
+            <span>Analysis state</span>
+            <strong class="connected-status">Complete</strong>
+            <small>Six cars compared</small>
+        </div>
+
+        <div>
+            <span>Highest-ranked car</span>
+            <strong id="highest-ranked-car">Car 01</strong>
+            <small class="warning-text">Inspection recommended</small>
+        </div>
+
+        <div>
+            <span>Temperature variance</span>
+            <strong id="highest-variance">6.82</strong>
+            <small>Highest recorded variance</small>
+        </div>
+
+        <div>
+            <span>Difference from fleet</span>
+            <strong id="fleet-difference">+4.16</strong>
+            <small>Compared with other cars</small>
+        </div>
+
+        <div>
+            <span>Last analysis</span>
+            <strong id="analysis-time">14:36:22</strong>
+            <small>Current uploaded case</small>
+        </div>
+
+    </section>
+
+
+    <!-- Main localisation workspace -->
+    <section class="acv-workspace">
+
+        <div class="train-localisation-panel">
+
+            <header class="panel-heading">
+
+                <div>
+                    <span>Train temperature map</span>
+                    <h2>Select a car to inspect</h2>
+                </div>
+
+                <div class="map-legend">
+                    <span class="normal-legend">Normal</span>
+                    <span class="warning-legend">Highest variance</span>
+                </div>
+
+            </header>
+
+
+            <!-- Train map -->
+            <div class="acv-train-map">
+
+                <div class="acv-train-line" aria-hidden="true"></div>
+
+                <div class="acv-carriages">
+
+                    <button
+                        type="button"
+                        class="acv-carriage highest-risk selected"
+                        data-car="01"
+                        aria-pressed="true"
+                    >
+                        <span class="car-number">Car 01</span>
+
+                        <span class="car-windows" aria-hidden="true">
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                        </span>
+
+                        <strong>6.82</strong>
+                        <small>Highest variance</small>
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="acv-carriage"
+                        data-car="02"
+                        aria-pressed="false"
+                    >
+                        <span class="car-number">Car 02</span>
+
+                        <span class="car-windows" aria-hidden="true">
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                        </span>
+
+                        <strong>2.41</strong>
+                        <small>Normal</small>
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="acv-carriage"
+                        data-car="03"
+                        aria-pressed="false"
+                    >
+                        <span class="car-number">Car 03</span>
+
+                        <span class="car-windows" aria-hidden="true">
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                        </span>
+
+                        <strong>2.66</strong>
+                        <small>Normal</small>
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="acv-carriage"
+                        data-car="04"
+                        aria-pressed="false"
+                    >
+                        <span class="car-number">Car 04</span>
+
+                        <span class="car-windows" aria-hidden="true">
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                        </span>
+
+                        <strong>2.18</strong>
+                        <small>Normal</small>
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="acv-carriage"
+                        data-car="05"
+                        aria-pressed="false"
+                    >
+                        <span class="car-number">Car 05</span>
+
+                        <span class="car-windows" aria-hidden="true">
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                        </span>
+
+                        <strong>2.37</strong>
+                        <small>Normal</small>
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="acv-carriage"
+                        data-car="06"
+                        aria-pressed="false"
+                    >
+                        <span class="car-number">Car 06</span>
+
+                        <span class="car-windows" aria-hidden="true">
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                        </span>
+
+                        <strong>2.24</strong>
+                        <small>Normal</small>
+                    </button>
+
+                </div>
+
+                <div class="train-bogies" aria-hidden="true">
+                    <span><i></i><i></i></span>
+                    <span><i></i><i></i></span>
+                    <span><i></i><i></i></span>
+                    <span><i></i><i></i></span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Selected car details -->
+        <aside class="car-detail-panel">
+
+            <header class="panel-heading">
+
+                <div>
+                    <span>Selected car</span>
+                    <h2 id="selected-car-name">Car 01</h2>
+                </div>
+
+                <strong
+                    class="car-status warning-status"
+                    id="selected-car-status"
+                >
+                    Inspect
+                </strong>
+
+            </header>
+
+
+            <div class="variance-reading">
+
+                <strong id="selected-variance">6.82</strong>
+
+                <span>
+                    temperature<br>
+                    variance
+                </span>
+
+            </div>
+
+
+            <div class="variance-scale">
+                <span
+                    id="variance-scale-fill"
+                    class="warning-fill"
+                    style="--variance-width: 82%;"
+                ></span>
+            </div>
+
+
+            <p id="selected-car-description">
+                Temperature readings vary more strongly than the other
+                cars in this case.
+            </p>
+
+
+            <dl class="car-readings">
+
+                <div>
+                    <dt>Average temperature</dt>
+                    <dd id="average-temperature">27.8 °C</dd>
+                </div>
+
+                <div>
+                    <dt>Maximum temperature</dt>
+                    <dd id="maximum-temperature">32.4 °C</dd>
+                </div>
+
+                <div>
+                    <dt>Minimum temperature</dt>
+                    <dd id="minimum-temperature">22.7 °C</dd>
+                </div>
+
+                <div>
+                    <dt>Current rank</dt>
+                    <dd id="selected-rank">1 of 6</dd>
+                </div>
+
+            </dl>
+
+        </aside>
+
+    </section>
+
+
+    <!-- Variance comparison -->
+    <section class="variance-section">
+
+        <header class="section-heading">
+
+            <div>
+                <span>Comparison</span>
+                <h2>Temperature variance by car</h2>
+            </div>
+
+            <span>Higher values require earlier inspection</span>
+
+        </header>
+
+
+        <div
+            class="variance-chart"
+            id="variance-chart"
+            aria-label="Temperature variance comparison"
+        >
+
+            <button
+                type="button"
+                class="variance-column warning-column selected"
+                data-car="01"
+                style="--column-height: 92%;"
+            >
+                <span>6.82</span>
+                <i></i>
+                <small>Car 01</small>
+            </button>
+
+            <button
+                type="button"
+                class="variance-column"
+                data-car="02"
+                style="--column-height: 33%;"
+            >
+                <span>2.41</span>
+                <i></i>
+                <small>Car 02</small>
+            </button>
+
+            <button
+                type="button"
+                class="variance-column"
+                data-car="03"
+                style="--column-height: 37%;"
+            >
+                <span>2.66</span>
+                <i></i>
+                <small>Car 03</small>
+            </button>
+
+            <button
+                type="button"
+                class="variance-column"
+                data-car="04"
+                style="--column-height: 29%;"
+            >
+                <span>2.18</span>
+                <i></i>
+                <small>Car 04</small>
+            </button>
+
+            <button
+                type="button"
+                class="variance-column"
+                data-car="05"
+                style="--column-height: 32%;"
+            >
+                <span>2.37</span>
+                <i></i>
+                <small>Car 05</small>
+            </button>
+
+            <button
+                type="button"
+                class="variance-column"
+                data-car="06"
+                style="--column-height: 30%;"
+            >
+                <span>2.24</span>
+                <i></i>
+                <small>Car 06</small>
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- Ranked results -->
+    <section class="ranking-section">
+
+        <header class="section-heading">
+
+            <div>
+                <span>Localisation output</span>
+                <h2>Inspection order</h2>
+            </div>
+
+            <span id="current-case-name">ACV Case 01</span>
+
+        </header>
+
+
+        <div class="ranking-table-wrapper">
+
+            <table class="ranking-table">
+
+                <thead>
+                    <tr>
+                        <th scope="col">Rank</th>
+                        <th scope="col">Car</th>
+                        <th scope="col">Temperature variance</th>
+                        <th scope="col">Difference from median</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="ranking-table-body">
+
+                    <tr class="ranking-warning">
+                        <td>01</td>
+                        <td>Car 01</td>
+                        <td>6.82</td>
+                        <td>+4.49</td>
+                        <td><span class="table-warning">Inspect first</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>02</td>
+                        <td>Car 03</td>
+                        <td>2.66</td>
+                        <td>+0.33</td>
+                        <td><span class="table-normal">Normal</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>03</td>
+                        <td>Car 02</td>
+                        <td>2.41</td>
+                        <td>+0.08</td>
+                        <td><span class="table-normal">Normal</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>04</td>
+                        <td>Car 05</td>
+                        <td>2.37</td>
+                        <td>+0.04</td>
+                        <td><span class="table-normal">Normal</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>05</td>
+                        <td>Car 06</td>
+                        <td>2.24</td>
+                        <td>−0.09</td>
+                        <td><span class="table-normal">Normal</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>06</td>
+                        <td>Car 04</td>
+                        <td>2.18</td>
+                        <td>−0.15</td>
+                        <td><span class="table-normal">Normal</span></td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script
+    src="{{ url_for('static', filename='js/acv.js') }}"
+    defer
+></script>
+{% endblock %}
